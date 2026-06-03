@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechnoBoyWonder | Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 via Kit-free CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --bg:       #04080f;
+      --blue1:    #4fc3f7;
+      --blue2:    #0288d1;
+      --blue3:    #01579b;
+      --grey1:    #b0bec5;
+      --grey2:    #546e7a;
+      --grey3:    #263238;
+      --dim:      #1c2833;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--grey1);
+    }
+
+    /* ── BG CANVAS ── */
+    #bg-canvas {
+      position: fixed; inset: 0; z-index: 0;
+    }
+
+    /* ── STAIRCASE ── */
+    #stairs-layer {
+      position: fixed; inset: 0; z-index: 1;
+      pointer-events: none; opacity: 0.09;
+    }
+
+    /* ── SCANLINES ── */
+    .scanlines {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+      );
+    }
+
+    /* ── SCENE ── */
+    #scene {
+      position: relative; z-index: 10;
+      width: 100%; height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0;
+    }
+
+    /* ── BOOT LOG ── */
+    #boot-log {
+      font-size: 0.72rem;
+      color: var(--grey2);
+      line-height: 1.85;
+      text-align: left;
+      width: 520px; max-width: 90vw;
+      min-height: 88px;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+    }
+    .boot-line { display: block; opacity: 0; transition: opacity 0.15s; }
+    .boot-line.ok::after { content: " [OK]"; color: #4dd0e1; }
+
+    /* ── TYPEWRITER ── */
+    .tw-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 48px;
+    }
+    .tw-prefix {
+      font-size: 1.3rem; color: var(--grey2);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .tw-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem; font-weight: 900;
+      color: var(--blue1);
+      text-shadow: 0 0 10px var(--blue1), 0 0 30px var(--blue2), 0 0 55px rgba(2,136,209,0.3);
+      white-space: nowrap; letter-spacing: 0.04em;
+    }
+    .tw-cursor {
+      display: inline-block;
+      width: 12px; height: 2rem;
+      background: var(--blue1);
+      box-shadow: 0 0 10px var(--blue1);
+      opacity: 0; vertical-align: middle;
+    }
+    .tw-cursor.blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── ORBS GRID — visible immediately ── */
+    .orbs-grid {
+      display: flex; flex-wrap: wrap;
+      gap: 36px; justify-content: center; align-items: center;
+      opacity: 1;
+    }
+
+    /* ── SINGLE ORB ── */
+    .orb-link {
+      position: relative;
+      display: flex; flex-direction: column;
+      align-items: center; text-decoration: none; gap: 10px;
+    }
+    .orb-link:nth-child(1) { animation: float 4.2s ease-in-out 0.0s infinite; }
+    .orb-link:nth-child(2) { animation: float 3.8s ease-in-out 0.5s infinite; }
+    .orb-link:nth-child(3) { animation: float 4.6s ease-in-out 1.0s infinite; }
+    .orb-link:nth-child(4) { animation: float 4.0s ease-in-out 1.5s infinite; }
+    .orb-link:nth-child(5) { animation: float 4.4s ease-in-out 0.8s infinite; }
+
+    @keyframes float {
+      0%   { transform: translateY(0px) rotate(0deg); }
+      33%  { transform: translateY(-7px) rotate(1deg); }
+      66%  { transform: translateY(3px) rotate(-1deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .orb-sphere {
+      width: 82px; height: 82px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      position: relative;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* glossy highlight */
+    .orb-sphere::before {
+      content: "";
+      position: absolute;
+      top: 10%; left: 18%;
+      width: 36%; height: 24%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.5) 0%, transparent 80%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* glow ring */
+    .orb-sphere::after {
+      content: "";
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      pointer-events: none;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+
+    /* hover spin */
+    .orb-link:hover .orb-sphere {
+      animation: spin-hover 0.65s ease-in-out forwards;
+    }
+    @keyframes spin-hover {
+      0%   { transform: scale(1.0) rotateY(0deg); }
+      50%  { transform: scale(1.18) rotateY(180deg); }
+      100% { transform: scale(1.14) rotateY(360deg); }
+    }
+
+    /* ── GMAIL — steel blue ── */
+    .orb--gmail .orb-sphere {
+      background: radial-gradient(135deg, #90caf9 0%, #1565c0 55%, #0d2137 100%);
+      box-shadow: 0 0 20px #42a5f5, 0 0 46px rgba(66,165,245,0.3);
+    }
+    .orb--gmail .orb-sphere::after { border-color: #90caf9; box-shadow: 0 0 12px #42a5f5; }
+    .orb--gmail:hover .orb-sphere  { box-shadow: 0 0 36px #42a5f5, 0 0 72px rgba(66,165,245,0.55); }
+    .orb--gmail .orb-label { color: #90caf9; text-shadow: 0 0 7px #42a5f5; }
+
+    /* ── AI — icy cyan ── */
+    .orb--ai .orb-sphere {
+      background: radial-gradient(135deg, #e0f7fa 0%, #00acc1 55%, #003840 100%);
+      box-shadow: 0 0 20px #00e5ff, 0 0 46px rgba(0,229,255,0.28);
+    }
+    .orb--ai .orb-sphere::after { border-color: #80deea; box-shadow: 0 0 12px #00e5ff; }
+    .orb--ai:hover .orb-sphere   { box-shadow: 0 0 36px #00e5ff, 0 0 72px rgba(0,229,255,0.5); }
+    .orb--ai .orb-label { color: #80deea; text-shadow: 0 0 7px #00e5ff; }
+
+    /* ── SHEETS — slate grey-blue ── */
+    .orb--sheets .orb-sphere {
+      background: radial-gradient(135deg, #b0bec5 0%, #455a64 55%, #1c2a33 100%);
+      box-shadow: 0 0 20px #78909c, 0 0 46px rgba(120,144,156,0.3);
+    }
+    .orb--sheets .orb-sphere::after { border-color: #b0bec5; box-shadow: 0 0 12px #78909c; }
+    .orb--sheets:hover .orb-sphere  { box-shadow: 0 0 36px #90a4ae, 0 0 72px rgba(144,164,174,0.5); }
+    .orb--sheets .orb-label { color: #b0bec5; text-shadow: 0 0 7px #78909c; }
+
+    /* ── FORMS — deep blue ── */
+    .orb--forms .orb-sphere {
+      background: radial-gradient(135deg, #82b1ff 0%, #1a237e 55%, #080e2e 100%);
+      box-shadow: 0 0 20px #536dfe, 0 0 46px rgba(83,109,254,0.3);
+    }
+    .orb--forms .orb-sphere::after { border-color: #82b1ff; box-shadow: 0 0 12px #536dfe; }
+    .orb--forms:hover .orb-sphere  { box-shadow: 0 0 36px #536dfe, 0 0 72px rgba(83,109,254,0.55); }
+    .orb--forms .orb-label { color: #82b1ff; text-shadow: 0 0 7px #536dfe; }
+
+    /* ── STORE — silver-white ── */
+    .orb--store .orb-sphere {
+      background: radial-gradient(135deg, #eceff1 0%, #607d8b 55%, #1c2833 100%);
+      box-shadow: 0 0 20px #cfd8dc, 0 0 46px rgba(207,216,220,0.28);
+    }
+    .orb--store .orb-sphere::after { border-color: #eceff1; box-shadow: 0 0 12px #b0bec5; }
+    .orb--store:hover .orb-sphere  { box-shadow: 0 0 36px #cfd8dc, 0 0 72px rgba(207,216,220,0.5); }
+    .orb--store .orb-label { color: #cfd8dc; text-shadow: 0 0 7px #90a4ae; }
+
+    /* ── ORB ICON COLOR ── */
+    .orb-sphere i { color: #fff; pointer-events: none; position: relative; z-index: 1; }
+    .orb--store .orb-sphere i { color: #1c2a33; }
+
+    /* ── ORB LABELS ── */
+    .orb-label {
+      font-size: 0.68rem; letter-spacing: 0.13em;
+      text-transform: uppercase; opacity: 0.65;
+      transition: opacity 0.25s;
+    }
+    .orb-link:hover .orb-label { opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .tw-text { font-size: 1.15rem; }
+      .tw-prefix { font-size: 0.85rem; }
+      .tw-cursor { height: 1.15rem; width: 8px; }
+      .orb-sphere { width: 64px; height: 64px; font-size: 1.3rem; }
+      .orbs-grid { gap: 22px; }
+      #boot-log { width: 90vw; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- Staircase -->
+<svg id="stairs-layer" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sg" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4fc3f7"/>
+      <stop offset="100%" stop-color="#546e7a"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#sg)" stroke-width="1.4" fill="none">
+    <polyline points="0,900 60,900 60,860 120,860 120,820 180,820 180,780 240,780 240,740 300,740 300,700 360,700 360,660 420,660 420,620 480,620 480,580 540,580 540,540 600,540 600,500 660,500 660,460 720,460 720,420 780,420 780,380 840,380 840,340 900,340 900,300 960,300 960,260 1020,260 1020,220 1080,220 1080,180 1140,180 1140,140 1200,140 1200,100 1260,100 1260,60 1320,60 1320,20 1440,20"/>
+    <polyline points="0,1000 60,1000 60,960 120,960 120,920 180,920 180,880 240,880 240,840 300,840 300,800 360,800 360,760 420,760 420,720 480,720 480,680 540,680 540,640 600,640 600,600 660,600 660,560 720,560 720,520 780,520 780,480 840,480 840,440 900,440 900,400 960,400 960,360 1020,360 1020,320 1080,320 1080,280 1140,280 1140,240 1200,240 1200,200 1260,200 1260,160 1320,160 1320,120 1440,120"/>
+    <polyline points="0,800 60,800 60,760 120,760 120,720 180,720 180,680 240,680 240,640 300,640 300,600 360,600 360,560 420,560 420,520 480,520 480,480 540,480 540,440 600,440 600,400 660,400 660,360 720,360 720,320 780,320 780,280 840,280 840,240 900,240 900,200 960,200 960,160 1020,160 1020,120 1080,120 1080,80 1140,80 1140,40 1200,40 1200,0"/>
+    <line x1="60" y1="900" x2="60" y2="760"/><line x1="120" y1="860" x2="120" y2="720"/>
+    <line x1="180" y1="820" x2="180" y2="680"/><line x1="240" y1="780" x2="240" y2="640"/>
+    <line x1="300" y1="740" x2="300" y2="600"/><line x1="360" y1="700" x2="360" y2="560"/>
+    <line x1="420" y1="660" x2="420" y2="520"/><line x1="480" y1="620" x2="480" y2="480"/>
+    <line x1="540" y1="580" x2="540" y2="440"/><line x1="600" y1="540" x2="600" y2="400"/>
+    <line x1="660" y1="500" x2="660" y2="360"/><line x1="720" y1="460" x2="720" y2="320"/>
+    <line x1="780" y1="420" x2="780" y2="280"/><line x1="840" y1="380" x2="840" y2="240"/>
+    <line x1="900" y1="340" x2="900" y2="200"/><line x1="960" y1="300" x2="960" y2="160"/>
+    <line x1="1020" y1="260" x2="1020" y2="120"/><line x1="1080" y1="220" x2="1080" y2="80"/>
+    <line x1="1140" y1="180" x2="1140" y2="40"/><line x1="1200" y1="140" x2="1200" y2="0"/>
+  </g>
+</svg>
+
+<div class="scanlines"></div>
+
+<div id="scene">
+
+  <!-- Bat logo -->
+  <div class="bat-logo" id="bat-logo">
+    <svg viewBox="0 0 120 52" fill="#4fc3f7" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 4C50 4 44 10 40 16C34 12 24 8 10 10C18 18 22 26 20 34C16 30 10 28 2 30C10 36 18 40 24 40C22 44 20 48 22 52C30 46 38 44 44 46C46 48 50 50 60 50C70 50 74 48 76 46C82 44 90 46 98 52C100 48 98 44 96 40C102 40 110 36 118 30C110 28 104 30 100 34C98 26 102 18 110 10C96 8 86 12 80 16C76 10 70 4 60 4Z"/>
+    </svg>
+  </div>
+
+  <!-- Boot log -->
+  <div id="boot-log"></div>
+
+  <!-- Typewriter -->
+  <div class="tw-row">
+    <span class="tw-prefix" id="tw-prefix">SYS_ADMIN ></span>
+    <span class="tw-text" id="tw-text"></span>
+    <span class="tw-cursor" id="tw-cursor"></span>
+  </div>
+
+  <!-- Orbs — shown immediately -->
+  <div class="orbs-grid" id="orbs-grid">
+
+    <a class="orb-link orb--gmail" href="https://mail.google.com" target="_blank" rel="noopener">
+      <div class="orb-sphere">
+        <i class="fa-solid fa-envelope"></i>
+      </div>
+      <span class="orb-label">Gmail</span>
+    </a>
+
+    <a class="orb-link orb--ai" href="https://claude.ai" target="_blank" rel="noopener">
+      <div class="orb-sphere">
+        <i class="fa-solid fa-microchip"></i>
+      </div>
+      <span class="orb-label">AI</span>
+    </a>
+
+    <a class="orb-link orb--sheets" href="https://sheets.google.com" target="_blank" rel="noopener">
+      <div class="orb-sphere">
+        <i class="fa-solid fa-table-cells"></i>
+      </div>
+      <span class="orb-label">Sheets</span>
+    </a>
+
+    <a class="orb-link orb--forms" href="https://forms.google.com" target="_blank" rel="noopener">
+      <div class="orb-sphere">
+        <i class="fa-solid fa-clipboard-list"></i>
+      </div>
+      <span class="orb-label">Forms</span>
+    </a>
+
+    <a class="orb-link orb--store" href="https://bluemoonstudios.store/" target="_blank" rel="noopener">
+      <div class="orb-sphere">
+        <i class="fa-solid fa-store"></i>
+      </div>
+      <span class="orb-label">Store</span>
+    </a>
+
+  </div>
+</div>
+
+<script>
+/* ── SPACE BACKGROUND ── */
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], nebulas = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    nebulas = [
+      { x: W*0.15, y: H*0.3,  rx: W*0.22, ry: H*0.26, c: 'rgba(2,136,209,0.11)' },
+      { x: W*0.80, y: H*0.6,  rx: W*0.24, ry: H*0.28, c: 'rgba(0,150,180,0.09)' },
+      { x: W*0.50, y: H*0.82, rx: W*0.28, ry: H*0.18, c: 'rgba(70,100,130,0.08)' },
+      { x: W*0.82, y: H*0.18, rx: W*0.16, ry: H*0.20, c: 'rgba(30,80,140,0.09)' },
+    ];
+  }
+
+  function buildStars() {
+    const hues = [200, 210, 220, 195, 205];
+    stars = Array.from({length: 300}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.6 + 0.2,
+      hue: hues[Math.floor(Math.random()*hues.length)],
+      a: Math.random(),
+      da: (Math.random()*0.01+0.002) * (Math.random()>0.5?1:-1),
+      drift: (Math.random()-0.5)*0.05
+    }));
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Deep navy background
+    const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H));
+    bg.addColorStop(0,   '#071526');
+    bg.addColorStop(0.6, '#04080f');
+    bg.addColorStop(1,   '#020508');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Nebulas
+    for (const n of nebulas) {
+      const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.rx);
+      g.addColorStop(0, n.c); g.addColorStop(1, 'transparent');
+      ctx.save();
+      ctx.scale(1, n.ry/n.rx);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y*(n.rx/n.ry), n.rx, 0, Math.PI*2);
+      ctx.fillStyle = g; ctx.fill();
+      ctx.restore();
+    }
+
+    // Stars
+    for (const s of stars) {
+      s.a += s.da;
+      if (s.a > 1 || s.a < 0) s.da *= -1;
+      s.x += s.drift;
+      if (s.x < 0) s.x = W;
+      if (s.x > W) s.x = 0;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `hsla(${s.hue}, 60%, 90%, ${s.a})`;
+      ctx.fill();
+      if (s.r > 1.2) {
+        ctx.strokeStyle = `hsla(${s.hue}, 70%, 95%, ${s.a*0.4})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        const sp = s.r*3;
+        ctx.moveTo(s.x-sp, s.y); ctx.lineTo(s.x+sp, s.y);
+        ctx.moveTo(s.x, s.y-sp); ctx.lineTo(s.x, s.y+sp);
+        ctx.stroke();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  resize(); buildStars();
+  window.addEventListener('resize', resize);
+  tick();
+})();
+
+/* ── FAST BOOT + TYPEWRITER ── */
+(async function () {
+  const delay = ms => new Promise(r => setTimeout(r, ms));
+
+  const bootLines = [
+    { text: "INITIALISING BATCOMPUTER UPLINK v4.2.0...", ok: true },
+    { text: "BYPASSING WAYNE ENTERPRISES FIREWALL...",   ok: true },
+    { text: "VERIFYING BIOMETRIC SIGNATURE...",          ok: true },
+    { text: "ACCESS GRANTED — WELCOME TO THE CAVE.",     ok: false },
+  ];
+  const greeting = "Welcome back, TechnoBoyWonder";
+
+  const bootEl   = document.getElementById('boot-log');
+  const textEl   = document.getElementById('tw-text');
+  const cursorEl = document.getElementById('tw-cursor');
+  const prefixEl = document.getElementById('tw-prefix');
+  const batEl    = document.getElementById('bat-logo');
+
+  // Bat logo instantly
+  batEl.classList.add('show');
+  await delay(200);
+
+  cursorEl.style.opacity = 1;
+  cursorEl.classList.add('blink');
+
+  // Rapid boot lines
+  for (const line of bootLines) {
+    const span = document.createElement('span');
+    span.className = 'boot-line' + (line.ok ? ' ok' : '');
+    span.textContent = line.text;
+    bootEl.appendChild(span);
+    await delay(20);
+    span.style.opacity = 1;
+    await delay(160);
+  }
+
+  await delay(250);
+
+  prefixEl.style.opacity = 1;
+  cursorEl.classList.remove('blink');
+  cursorEl.style.opacity = 1;
+
+  // Fast typewriter
+  for (let i = 0; i < greeting.length; i++) {
+    textEl.textContent += greeting[i];
+    await delay(45 + Math.random()*35);
+  }
+
+  cursorEl.classList.add('blink');
+})();
+</script>
+</body>
+</html>

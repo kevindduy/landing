@@ -58,7 +58,7 @@
     @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
     #app-shell { position: relative; z-index: 10; width: 100%; height: 100vh; display: flex; flex-direction: column; transition: filter 0.8s ease; }
-    body.focus-mode #app-shell { filter: brightness(0.4) saturate(0.8); }
+    body.focus-mode #app-shell { filter: brightness(0.5) saturate(0.7); }
 
     /* ── TOP NAVIGATION ── */
     header.top-nav {
@@ -105,6 +105,25 @@
     .sb-link:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateX(-4px); box-shadow: 4px 4px 12px rgba(0,0,0,0.1); }
     .sb-link:hover.sb-removebg i { color: #888; } .sb-link:hover.sb-chatgpt i { color: #10a37f; } .sb-link:hover.sb-claude i { color: #d97757; } .sb-link:hover.sb-tidycal i { color: #3b82f6; } .sb-link:hover.sb-bluemoon i { color: #1e3a8a; } .sb-link:hover.sb-docs i { color: #4285f4; } .sb-link:hover.sb-sheets i { color: #0f9d58; } .sb-link:hover.sb-reddit i { color: #ff4500; } .sb-link:hover.sb-ig i { color: #e1306c; } .sb-link:hover.sb-fb i { color: #1877f2; } .sb-link:hover.sb-yahoo i { color: #410093; }
 
+    /* ── FOCUS TIMER POPUP ── */
+    #timer-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: var(--transition); }
+    #timer-popup.active { opacity: 1; pointer-events: auto; }
+    .timer-panel { background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius-lg); padding: 40px; text-align: center; position: relative; min-width: 350px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); transform: scale(0.9); transition: var(--transition); }
+    #timer-popup.active .timer-panel { transform: scale(1); }
+    .close-timer { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+    .close-timer:hover { color: var(--danger); transform: rotate(90deg); }
+    .timer-panel h2 { color: var(--accent); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 20px;}
+    .timer-display { font-size: 5.5rem; font-weight: 200; color: var(--text-main); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 30px; letter-spacing: -0.03em;}
+    .timer-controls { display: flex; gap: 15px; justify-content: center; }
+    .pomo-btn { background: var(--accent); color: #0f172a; border: 1px solid var(--accent); padding: 10px 25px; border-radius: 30px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .pomo-btn:hover { background: transparent; color: var(--accent); box-shadow: 0 0 15px var(--accent-dim); }
+    .pomo-btn.alt { background: transparent; color: var(--text-muted); border-color: var(--border-hover); }
+    .pomo-btn.alt:hover { color: var(--text-main); border-color: var(--text-main); }
+    
+    .focus-wave { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 10px; height: 10px; border-radius: 50%; background: var(--accent); opacity: 0.8; z-index: 9998; pointer-events: none; }
+    .focus-wave.active { animation: waveExpand 1.5s ease-out forwards; }
+    @keyframes waveExpand { 100% { transform: translate(-50%, -50%) scale(500); opacity: 0; } }
+
     /* ── MAIN CONTENT ── */
     main.content-area { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 30px; position: relative; }
     main.content-area::-webkit-scrollbar { width: 6px; }
@@ -150,14 +169,14 @@
     .widget-col .panel { flex: 1; display: flex; flex-direction: column; }
     @media (max-width: 800px) { .split-widgets { grid-template-columns: 1fr; } }
 
-    /* Scratchpad (Left Square) */
+    /* Scratchpad */
     .scratchpad-wrap { position: relative; padding-bottom: 40px; }
     .scratchpad { flex: 1; width: 100%; min-height: 120px; background: transparent; border: none; color: var(--text-main); font-family: inherit; font-size: 0.85rem; resize: none; outline: none; line-height: 1.4; }
     .scratchpad::placeholder { color: var(--text-subtle); }
     .copy-btn { position: absolute; bottom: 10px; right: 10px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-muted); padding: 4px 10px; border-radius: var(--radius-sm); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
     .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* Reminders (Right Square) */
+    /* Reminders */
     .reminders-list { flex: 1; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; padding-right: 5px; }
     .reminder-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--border); border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     .reminder-item:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: scale(1.01); }
@@ -171,7 +190,6 @@
     .add-reminder input:focus { border-color: var(--accent); outline: none; background: rgba(255,255,255,0.05); }
 
     /* ── WIDGETS (RIGHT) ── */
-    /* Shrunk Weather */
     .weather-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
     .weather-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px; display: flex; align-items: center; gap: 12px; transition: var(--transition); }
     .weather-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent-dim); transform: translateX(-4px); }
@@ -188,16 +206,6 @@
     .traffic-actions { display: flex; gap: 8px; }
     .live-map-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); text-decoration: none; padding: 8px; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600; transition: var(--transition); }
     .live-map-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-2px); }
-
-    /* Shrunk Focus Control */
-    .pomodoro-widget { text-align: center; position: relative; z-index: 20; }
-    .pomo-time { font-size: 2rem; font-weight: 300; letter-spacing: -0.05em; margin: 5px 0 10px 0; color: var(--accent); font-variant-numeric: tabular-nums; }
-    .pomo-btn { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); padding: 6px 16px; border-radius: 20px; font-size:0.8rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
-    .pomo-btn:hover { background: var(--accent); color: #fff; }
-
-    .focus-wave { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 10px; height: 10px; border-radius: 50%; background: var(--accent); opacity: 0.8; z-index: 100; pointer-events: none; }
-    .focus-wave.active { animation: waveExpand 1.5s ease-out forwards; }
-    @keyframes waveExpand { 100% { transform: translate(-50%, -50%) scale(500); opacity: 0; } }
 
     /* ── STATS TAB (GRAPHS & TELEMETRY) ── */
     #view-stats .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
@@ -224,7 +232,7 @@
     .bank-btn:hover { background: #00695c; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,77,64,0.4); }
 
     /* ── STANDBY MODE ── */
-    #standby-screen { position: fixed; inset: 0; background: #000; color: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+    #standby-screen { position: fixed; inset: 0; background: #000; color: #fff; z-index: 99999; display: flex; align-items: center; justify-content: center; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.5s; }
     #standby-screen.active { opacity: 1; pointer-events: auto; }
     #standby-clock { font-size: 7rem; font-weight: 200; letter-spacing: -0.05em; color: rgba(255,255,255,0.8); }
 
@@ -256,6 +264,21 @@
     </pattern>
   </defs>
 </svg>
+
+<div class="focus-wave" id="wave"></div>
+
+<!-- ── POPUP TIMER OVERLAY ── -->
+<div id="timer-popup" class="overlay-popup">
+  <div class="timer-panel">
+    <button class="close-timer" onclick="closeTimer()"><i class="fa-solid fa-xmark"></i></button>
+    <h2>Focus Session</h2>
+    <div class="timer-display" id="popup-pomo-display">25:00</div>
+    <div class="timer-controls">
+      <button class="pomo-btn" id="popup-pomo-btn" onclick="togglePomodoro()">Start</button>
+      <button class="pomo-btn alt" onclick="resetPomodoro()">Reset</button>
+    </div>
+  </div>
+</div>
 
 <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <aside id="quick-sidebar">
@@ -294,7 +317,9 @@
       <a href="https://youtube.com" target="_blank" class="media-icon youtube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
       <a href="https://spotify.com" target="_blank" class="media-icon spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
       <button class="media-icon" id="theme-toggle" title="Toggle Theme" style="background:none; border:none;"><i class="fa-solid fa-circle-half-stroke"></i></button>
-      <button class="sidebar-trigger" onclick="toggleSidebar()" title="Open Hub"><i class="fa-solid fa-bars-staggered"></i></button>
+      <button class="media-icon" id="standby-toggle" title="Standby Mode" style="background:none; border:none;"><i class="fa-solid fa-moon"></i></button>
+      <button class="media-icon" onclick="openTimer()" title="Focus Timer" style="background:none; border:none;"><i class="fa-solid fa-stopwatch"></i></button>
+      <button class="sidebar-trigger" onclick="toggleSidebar()" title="Open Hub" style="margin-left: 5px;"><i class="fa-solid fa-bars-staggered"></i></button>
     </div>
   </header>
 
@@ -330,10 +355,8 @@
             <a class="app-tile amazon" href="https://amazon.com" target="_blank"><div class="app-icon"><i class="fa-brands fa-amazon"></i></div><span class="app-label">Amazon</span></a>
           </div>
 
-          <!-- NEW SPLIT GRID FOR SCRATCHPAD & REMINDERS -->
+          <!-- SPLIT GRID FOR SCRATCHPAD & REMINDERS -->
           <div class="split-widgets">
-            
-            <!-- Left Square: Scratchpad -->
             <div class="widget-col">
               <h2 class="section-title">Scratchpad</h2>
               <div class="panel scratchpad-wrap">
@@ -342,7 +365,6 @@
               </div>
             </div>
 
-            <!-- Right Square: Reminders -->
             <div class="widget-col">
               <h2 class="section-title">Up Next</h2>
               <div class="panel">
@@ -352,7 +374,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -379,12 +400,6 @@
                 <a href="https://www.google.com/maps/dir//SOFWERX,+Ybor,+Tampa,+FL" target="_blank" class="live-map-btn"><i class="fa-solid fa-building"></i> Work</a>
               </div>
             </div>
-          </div>
-          
-          <div class="pomodoro-widget panel">
-            <h2 class="section-title" style="justify-content: center; margin-top:0;">Focus Control</h2>
-            <div class="pomo-time" id="pomo-display">25:00</div>
-            <button class="pomo-btn" id="pomo-btn" onclick="togglePomodoro()">Start Focus</button>
           </div>
         </aside>
       </div>
@@ -441,6 +456,11 @@
   </div>
 </div>
 
+<!-- STANDBY SCREEN -->
+<div id="standby-screen">
+  <div id="standby-clock">00:00</div>
+</div>
+
 <script>
 /* ── SIDEBAR LOGIC ── */
 function toggleSidebar() {
@@ -464,6 +484,7 @@ function updateTime() {
   
   document.getElementById('clock').innerHTML = `${displayHrs}:${mins} <span class="ampm">${ampmStr}</span>`;
   document.getElementById('date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('standby-clock').textContent = `${displayHrs}:${mins}`;
 
   let greeting = "Welcome back";
   if (hrs24 >= 5 && hrs24 < 12) greeting = "Good morning"; else if (hrs24 >= 12 && hrs24 < 17) greeting = "Good afternoon"; else if (hrs24 >= 17 && hrs24 < 22) greeting = "Good evening"; else greeting = "Late night ops";
@@ -522,21 +543,110 @@ function renderReminders() {
   dashList.innerHTML = ''; fullList.innerHTML = '';
   reminders.forEach((rem, i) => {
     const html = `<div class="reminder-item" id="rem-${rem.id}" onclick="deleteRem(${rem.id})"><div class="checkbox"></div><div class="reminder-text">${rem.text}</div></div>`;
-    fullList.innerHTML += html; if (i < 4) dashList.innerHTML += html; // Show up to 4 in dashboard so it fits box
+    fullList.innerHTML += html; if (i < 4) dashList.innerHTML += html; 
   });
 }
 function deleteRem(id) { const els = document.querySelectorAll(`#rem-${id}`); els.forEach(el => el.classList.add('removing')); setTimeout(() => { reminders = reminders.filter(r => r.id !== id); saveReminders(); renderReminders(); }, 300); }
 function addReminder(inputElement) { const text = inputElement.value.trim(); if (text) { reminders.push({ id: Date.now(), text }); inputElement.value = ''; saveReminders(); renderReminders(); } }
 renderReminders();
 
-/* ── POMODORO TIMER ── */
-let pomoTime = 25 * 60; let pomoInterval = null; let isFocusing = false;
-function formatPomo(seconds) { const m = Math.floor(seconds / 60).toString().padStart(2, '0'); const s = (seconds % 60).toString().padStart(2, '0'); return `${m}:${s}`; }
-function togglePomodoro() {
-  const btn = document.getElementById('pomo-btn'); const wave = document.getElementById('wave');
-  if (isFocusing) { clearInterval(pomoInterval); isFocusing = false; btn.textContent = "Start Focus"; document.body.classList.remove('focus-mode'); wave.classList.remove('active'); pomoTime = 25 * 60; document.getElementById('pomo-display').textContent = formatPomo(pomoTime); } 
-  else { isFocusing = true; btn.textContent = "Stop Focus"; document.body.classList.add('focus-mode'); wave.classList.add('active'); setTimeout(() => { wave.classList.remove('active'); }, 1600); pomoInterval = setInterval(() => { pomoTime--; document.getElementById('pomo-display').textContent = formatPomo(pomoTime); if (pomoTime <= 0) togglePomodoro(); }, 1000); }
+/* ── SLEEK POPUP POMODORO TIMER & ALARM ── */
+let pomoTime = 25 * 60; 
+let pomoInterval = null; 
+let isFocusing = false;
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
 }
+
+function playAlarm() {
+  if (!audioCtx) return;
+  try {
+    for(let i=0; i<3; i++) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime + i*0.3);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime + i*0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i*0.3 + 0.2);
+      osc.start(audioCtx.currentTime + i*0.3);
+      osc.stop(audioCtx.currentTime + i*0.3 + 0.25);
+    }
+  } catch(e) {}
+}
+
+function formatPomo(seconds) { 
+  const m = Math.floor(seconds / 60).toString().padStart(2, '0'); 
+  const s = (seconds % 60).toString().padStart(2, '0'); 
+  return `${m}:${s}`; 
+}
+
+function openTimer() {
+  document.getElementById('timer-popup').classList.add('active');
+  document.body.classList.add('focus-mode');
+}
+
+function closeTimer() {
+  document.getElementById('timer-popup').classList.remove('active');
+  if (!isFocusing) document.body.classList.remove('focus-mode');
+}
+
+function resetPomodoro() {
+  clearInterval(pomoInterval);
+  isFocusing = false;
+  pomoTime = 25 * 60;
+  document.getElementById('popup-pomo-display').textContent = formatPomo(pomoTime);
+  document.getElementById('popup-pomo-btn').textContent = "Start";
+  document.title = "Command Center | TBW";
+  document.getElementById('wave').classList.remove('active');
+  if (!document.getElementById('timer-popup').classList.contains('active')) {
+     document.body.classList.remove('focus-mode');
+  }
+}
+
+function togglePomodoro() {
+  initAudio(); // Required to unlock browser audio
+  const btn = document.getElementById('popup-pomo-btn'); 
+  const wave = document.getElementById('wave');
+  
+  if (isFocusing) { 
+    clearInterval(pomoInterval); 
+    isFocusing = false; 
+    btn.textContent = "Resume"; 
+    document.title = "Paused - " + formatPomo(pomoTime);
+  } 
+  else { 
+    isFocusing = true; 
+    btn.textContent = "Pause"; 
+    document.body.classList.add('focus-mode'); 
+    
+    // Wave animation triggers on start
+    wave.classList.add('active'); 
+    setTimeout(() => { wave.classList.remove('active'); }, 1600); 
+    
+    document.title = formatPomo(pomoTime) + " - Focus";
+    pomoInterval = setInterval(() => { 
+      pomoTime--; 
+      const timeStr = formatPomo(pomoTime);
+      document.getElementById('popup-pomo-display').textContent = timeStr; 
+      document.title = timeStr + " - Focus";
+      
+      if (pomoTime <= 0) { 
+        playAlarm();
+        resetPomodoro();
+        setTimeout(() => alert("Focus session complete! Time for a short break."), 100);
+      } 
+    }, 1000); 
+  }
+}
+
 
 /* ── STATS TAB & GRAPHS ── */
 let cpuData = Array(20).fill(10);
@@ -591,6 +701,12 @@ document.addEventListener('keydown', (e) => {
   if (e.key === konamiCode[konamiIndex]) { konamiIndex++; if (konamiIndex === konamiCode.length) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.getElementById('view-secret').classList.add('active'); konamiIndex = 0; } } 
   else konamiIndex = 0;
 });
+
+/* ── STANDBY MODE ── */
+const standbyScreen = document.getElementById('standby-screen');
+document.getElementById('standby-toggle').addEventListener('click', () => standbyScreen.classList.add('active'));
+standbyScreen.addEventListener('click', () => standbyScreen.classList.remove('active'));
+document.addEventListener('keydown', () => standbyScreen.classList.remove('active'));
 </script>
 </body>
 </html>

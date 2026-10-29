@@ -3,52 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Center | TBW</title>
+  <title>Command Center | TBW 🎃</title>
   
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Creepster&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
-    /* ── LIGHT / DARK MODE VARIABLES ── */
+    /* ── HALLOWEEN COZY VARIABLES ── */
     :root {
-      --bg-grad:          linear-gradient(-45deg, #020617, #0f172a, #172554, #0f172a);
-      --surface:          rgba(30, 41, 59, 0.6);
-      --surface-hover:    rgba(51, 65, 85, 0.8);
-      --border:           rgba(255, 255, 255, 0.08);
-      --border-hover:     rgba(255, 255, 255, 0.2);
+      --bg-grad:          linear-gradient(-45deg, #12041f, #2a0f2e, #4a1a08, #12041f);
+      --surface:          rgba(43, 16, 48, 0.65);
+      --surface-hover:    rgba(74, 26, 8, 0.85);
+      --border:           rgba(255, 145, 0, 0.18);
+      --border-hover:     rgba(255, 145, 0, 0.45);
       
-      --accent:           #38bdf8;
-      --accent-dim:       rgba(56, 189, 248, 0.15);
+      --accent:           #ff8c1a;
+      --accent-dim:       rgba(255, 140, 26, 0.18);
+      --purple:           #a855f7;
       
-      --text-main:        #f8fafc;
-      --text-muted:       #94a3b8;
-      --text-subtle:      #64748b;
+      --text-main:        #fff7ed;
+      --text-muted:       #e8c9a8;
+      --text-subtle:      #b48a6a;
       
-      --danger:           #f87171;
-      --success:          #4ade80;
+      --danger:           #ff5a5a;
+      --success:          #a3e635;
       --warning:          #fbbf24;
       
       --nav-height:       64px;
-      --radius-lg:        14px;
-      --radius-md:        10px;
-      --radius-sm:        6px;
+      --radius-lg:        22px;
+      --radius-md:        16px;
+      --radius-sm:        10px;
       --transition:       0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     [data-theme="light"] {
-      --bg-grad:          linear-gradient(-45deg, #f1f5f9, #e2e8f0, #cbd5e1, #f1f5f9);
-      --surface:          rgba(255, 255, 255, 0.65);
+      --bg-grad:          linear-gradient(-45deg, #fff7ed, #ffedd5, #fde68a, #fff7ed);
+      --surface:          rgba(255, 255, 255, 0.75);
       --surface-hover:    rgba(255, 255, 255, 0.95);
-      --border:           rgba(0, 0, 0, 0.08);
-      --border-hover:     rgba(0, 0, 0, 0.15);
-      --accent:           #0ea5e9;
-      --accent-dim:       rgba(14, 165, 233, 0.15);
-      --text-main:        #0f172a;
-      --text-muted:       #475569;
-      --text-subtle:      #94a3b8;
+      --border:           rgba(234, 88, 12, 0.18);
+      --border-hover:     rgba(234, 88, 12, 0.35);
+      --accent:           #ea580c;
+      --accent-dim:       rgba(234, 88, 12, 0.15);
+      --text-main:        #431407;
+      --text-muted:       #7c2d12;
+      --text-subtle:      #a16207;
     }
 
     /* ── BASE STYLES ── */
@@ -56,6 +57,20 @@
     html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; color: var(--text-main); font-size: 15px;}
     body { background: var(--bg-grad); background-size: 400% 400%; animation: gradientBG 20s ease infinite; transition: color 0.5s, background 0.5s; }
     @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+    /* ── SPOOKY DECOR ── */
+    .bat { position: fixed; top: 80px; left: -60px; z-index: 5; font-size: 1.8rem; pointer-events: none; animation: flyAcross 18s linear infinite; filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)); }
+    .bat.b2 { top: 140px; font-size: 1.3rem; animation-delay: 6s; animation-duration: 22s; }
+    .bat.b3 { top: 60px; font-size: 2.2rem; animation-delay: 11s; animation-duration: 26s; }
+    @keyframes flyAcross { 0% { left: -60px; transform: translateY(0); } 25% { transform: translateY(22px); } 50% { transform: translateY(-12px); } 100% { left: 110%; transform: translateY(15px); } }
+    .ghost { position: fixed; right: 22px; bottom: 72px; z-index: 100; font-size: 2.6rem; pointer-events: none; animation: ghostFloat 6s ease-in-out infinite; filter: drop-shadow(0 0 14px rgba(255,255,255,.35)); }
+    @keyframes ghostFloat { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+    .web { position: fixed; top: 64px; right: 4px; z-index: 60; font-size: 3.2rem; opacity: .35; pointer-events: none; transform: rotate(12deg); }
+    .pumpkin-patch { position: fixed; right: 18px; bottom: 8px; z-index: 99; font-size: 1.6rem; letter-spacing: 4px; pointer-events: none; filter: drop-shadow(0 0 10px rgba(255,140,26,.6)); animation: pumpkinGlow 3s ease-in-out infinite; }
+    @keyframes pumpkinGlow { 0%, 100% { filter: drop-shadow(0 0 6px rgba(255,140,26,.4)); } 50% { filter: drop-shadow(0 0 16px rgba(255,140,26,.9)); } }
+    .moon { width: 30px; height: 30px; border-radius: 50%; background: #fde68a; box-shadow: 0 0 18px #fbbf24, 0 0 38px rgba(251,191,36,.5); flex-shrink: 0; animation: moonFlicker 4s ease-in-out infinite; }
+    @keyframes moonFlicker { 0%, 100% { box-shadow: 0 0 16px #fbbf24; } 50% { box-shadow: 0 0 26px #fbbf24, 0 0 44px rgba(251,191,36,.6); } }
+    .pumpkin-divider { text-align: center; letter-spacing: 10px; font-size: 1.1rem; margin: 4px 0 20px; opacity: .9; }
 
     #app-shell { position: relative; z-index: 10; width: 100%; height: 100vh; display: flex; flex-direction: column; transition: filter 0.8s ease; }
     body.focus-mode #app-shell { filter: brightness(0.5) saturate(0.7); }
@@ -67,16 +82,16 @@
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 50;
     }
     .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1rem; letter-spacing: -0.02em; }
-    .brand-logo { width: 26px; height: 26px; border-radius: 6px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .brand-logo { width: 26px; height: 26px; border-radius: 50% 50% 45% 45%; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .nav-brand i.fallback-icon { color: var(--accent); font-size: 1.2rem; }
     
     .nav-center { display: flex; gap: 6px; }
     .nav-btn {
       background: transparent; border: none; color: var(--text-muted); font-family: inherit; font-size: 0.85rem; font-weight: 500;
-      padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+      padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: var(--transition);
     }
     .nav-btn:hover { color: var(--text-main); background: var(--border); }
-    .nav-btn.active { color: var(--accent); background: var(--accent-dim); }
+    .nav-btn.active { color: #fff; background: linear-gradient(135deg, #f97316, #a855f7); box-shadow: 0 4px 14px rgba(249,115,22,.35); }
 
     .nav-media { display: flex; align-items: center; gap: 14px; }
     .media-icon { color: var(--text-muted); font-size: 1.15rem; transition: var(--transition); text-decoration: none; cursor: pointer; }
@@ -108,11 +123,11 @@
     /* ── FOCUS TIMER POPUP ── */
     #timer-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: var(--transition); }
     #timer-popup.active { opacity: 1; pointer-events: auto; }
-    .timer-panel { background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius-lg); padding: 40px; text-align: center; position: relative; min-width: 350px; box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); transform: scale(0.9); transition: var(--transition); }
+    .timer-panel { background: var(--surface); border: 1px solid var(--accent); border-radius: 26px; padding: 40px; text-align: center; position: relative; min-width: 350px; box-shadow: 0 0 40px rgba(255, 140, 26, 0.35); transform: scale(0.9); transition: var(--transition); }
     #timer-popup.active .timer-panel { transform: scale(1); }
     .close-timer { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
     .close-timer:hover { color: var(--danger); transform: rotate(90deg); }
-    .timer-panel h2 { color: var(--accent); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 20px;}
+    .timer-panel h2 { color: var(--accent); font-family: 'Creepster', cursive; font-weight: 400; letter-spacing: 0.08em; font-size: 1.4rem; margin-bottom: 20px;}
     .timer-display { font-size: 5.5rem; font-weight: 200; color: var(--text-main); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 30px; letter-spacing: -0.03em;}
     .timer-controls { display: flex; gap: 15px; justify-content: center; }
     .pomo-btn { background: var(--accent); color: #0f172a; border: 1px solid var(--accent); padding: 10px 25px; border-radius: 30px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
@@ -133,9 +148,9 @@
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-    .dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed rgba(255,140,26,.4); }
     .greeting-area .sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; display: block; }
-    .greeting-area .title { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; }
+    .greeting-area .title { font-size: 2.4rem; font-weight: 400; letter-spacing: 0.02em; font-family: 'Creepster', 'Inter', cursive; }
     
     .time-display { text-align: right; cursor: pointer; transition: var(--transition); user-select: none; }
     .time-display:hover { transform: scale(1.02); color: var(--accent); }
@@ -145,19 +160,26 @@
 
     .dashboard-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
     
-    .section-title { font-size: 0.75rem; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 0.75rem; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     .panel { background: var(--surface); border: 1px solid var(--border); backdrop-filter: blur(12px); padding: 16px; border-radius: var(--radius-lg); box-shadow: 0 4px 20px -8px rgba(0,0,0,0.1); transition: var(--transition); }
+    .panel:hover { box-shadow: 0 8px 30px rgba(255,140,26,.16); }
+
+    /* Halloween haunt card */
+    .haunt-card { background: linear-gradient(135deg, rgba(249,115,22,.28), rgba(168,85,247,.28)); border: 1px dashed rgba(255,140,26,.6); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 20px; }
+    .haunt-card h3 { font-family: 'Creepster', cursive; font-weight: 400; font-size: 1.35rem; letter-spacing: .04em; margin-bottom: 6px; }
+    .haunt-card p { font-size: .85rem; color: var(--text-muted); line-height: 1.5; }
+    .haunt-count { font-size: 1.6rem; font-weight: 700; color: var(--warning); margin: 8px 0; }
 
     /* ── WIDGETS (LEFT) ── */
     .day-progress-container { margin-top: -4px; margin-bottom: 20px; }
-    .progress-track { width: 100%; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
-    .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width 1s ease-out; }
+    .progress-track { width: 100%; height: 10px; background: var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 6px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #f97316, #a855f7, #fbbf24); border-radius: 10px; width: 0%; transition: width 1s ease-out; }
     .progress-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
 
     .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 12px; margin-bottom: 20px; }
     .app-tile { display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 8px; outline: none; }
-    .app-icon { width: 50px; height: 50px; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--text-main); transition: var(--transition); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .app-tile:hover .app-icon { transform: translateY(-4px); background: var(--surface-hover); border-color: var(--border-hover); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+    .app-icon { width: 52px; height: 52px; border-radius: 46% 54% 52% 48% / 52% 48% 54% 46%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--text-main); transition: var(--transition); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .app-tile:hover .app-icon { transform: translateY(-4px) rotate(-3deg); background: var(--surface-hover); border-color: var(--border-hover); box-shadow: 0 6px 15px rgba(255,140,26,.25); border-radius: 50%; }
     .app-label { font-size: 0.7rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); }
     .app-tile:hover .app-label { color: var(--text-main); }
     
@@ -173,7 +195,7 @@
     .scratchpad-wrap { position: relative; padding-bottom: 40px; }
     .scratchpad { flex: 1; width: 100%; min-height: 120px; background: transparent; border: none; color: var(--text-main); font-family: inherit; font-size: 0.85rem; resize: none; outline: none; line-height: 1.4; }
     .scratchpad::placeholder { color: var(--text-subtle); }
-    .copy-btn { position: absolute; bottom: 10px; right: 10px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-muted); padding: 4px 10px; border-radius: var(--radius-sm); font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
+    .copy-btn { position: absolute; bottom: 10px; right: 10px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-muted); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; transition: var(--transition); }
     .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
     /* Reminders */
@@ -186,12 +208,12 @@
     .reminder-item.removing .checkbox { background: var(--accent); border-color: var(--accent); }
     .reminder-text { font-size: 0.8rem; font-weight: 500; color: var(--text-main); }
     .add-reminder { margin-top: auto; padding-top: 10px; }
-    .add-reminder input { width: 100%; background: var(--border); border: 1px solid transparent; border-radius: var(--radius-md); padding: 8px 12px; color: var(--text-main); font-family: inherit; font-size: 0.8rem; transition: var(--transition); }
+    .add-reminder input { width: 100%; background: var(--border); border: 1px solid transparent; border-radius: 20px; padding: 8px 12px; color: var(--text-main); font-family: inherit; font-size: 0.8rem; transition: var(--transition); }
     .add-reminder input:focus { border-color: var(--accent); outline: none; background: rgba(255,255,255,0.05); }
 
     /* ── WIDGETS (RIGHT) ── */
     .weather-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-    .weather-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px; display: flex; align-items: center; gap: 12px; transition: var(--transition); }
+    .weather-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius-md); padding: 10px 14px; display: flex; align-items: center; gap: 12px; transition: var(--transition); }
     .weather-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent-dim); transform: translateX(-4px); }
     .wx-icon { font-size: 1.5rem; color: var(--accent); width: 30px; text-align: center; }
     .wx-info { flex: 1; }
@@ -204,7 +226,7 @@
     .traffic-header { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; margin-bottom: 10px; color: var(--text-main); }
     .traffic-header i { color: var(--success); }
     .traffic-actions { display: flex; gap: 8px; }
-    .live-map-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); text-decoration: none; padding: 8px; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600; transition: var(--transition); }
+    .live-map-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--surface-hover); border: 1px solid var(--border); color: var(--text-main); text-decoration: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; transition: var(--transition); }
     .live-map-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-2px); }
 
     /* ── STATS TAB (GRAPHS & TELEMETRY) ── */
@@ -213,9 +235,9 @@
     .chart-header { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;}
     .chart-val { color: var(--text-main); font-weight: 700; }
     .chart-box { height: 100px; display: flex; align-items: flex-end; gap: 3px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
-    .chart-bar { flex: 1; border-radius: 2px 2px 0 0; transition: height 0.3s ease; opacity: 0.8; }
+    .chart-bar { flex: 1; border-radius: 6px 6px 0 0; transition: height 0.3s ease; opacity: 0.8; }
     .chart-bar.cpu { background: var(--accent); box-shadow: 0 0 8px var(--accent-dim); }
-    .chart-bar.ram { background: var(--warning); box-shadow: 0 0 8px rgba(251,191,36,0.15); }
+    .chart-bar.ram { background: var(--purple); box-shadow: 0 0 8px rgba(168,85,247,0.3); }
     
     .sys-diag-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; font-family: monospace; font-size: 0.8rem;}
     .diag-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-main); }
@@ -265,13 +287,18 @@
   </defs>
 </svg>
 
+<div class="bat">🦇</div><div class="bat b2">🦇</div><div class="bat b3">🦇</div>
+<div class="web">🕸️</div>
+<div class="ghost">👻</div>
+<div class="pumpkin-patch">🎃 🎃 🍂</div>
+
 <div class="focus-wave" id="wave"></div>
 
 <!-- ── POPUP TIMER OVERLAY ── -->
 <div id="timer-popup" class="overlay-popup">
   <div class="timer-panel">
     <button class="close-timer" onclick="closeTimer()"><i class="fa-solid fa-xmark"></i></button>
-    <h2>Focus Session</h2>
+    <h2>Focus Session 🎃</h2>
     <div class="timer-display" id="popup-pomo-display">25:00</div>
     <div class="timer-controls">
       <button class="pomo-btn" id="popup-pomo-btn" onclick="togglePomodoro()">Start</button>
@@ -283,7 +310,7 @@
 <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <aside id="quick-sidebar">
   <div class="sidebar-header">
-    <span><i class="fa-solid fa-bolt" style="color:var(--accent); margin-right:8px;"></i> Quick Hub</span>
+    <span><i class="fa-solid fa-bolt" style="color:var(--accent); margin-right:8px;"></i> Quick Hub 🎃</span>
     <button class="close-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <a href="https://www.remove.bg/" target="_blank" class="sb-link sb-removebg"><i class="fa-solid fa-eraser"></i> Remove.bg</a>
@@ -304,6 +331,7 @@
     <div class="nav-brand">
       <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
       <i class="fa-solid fa-layer-group fallback-icon" style="display: none;"></i> 
+      <div class="moon"></div>
       Command Center
     </div>
     
@@ -329,7 +357,7 @@
     <section id="view-home" class="view-section active">
       <header class="dashboard-header">
         <div class="greeting-area">
-          <span class="sub">Personal OS</span>
+          <span class="sub">Personal OS • 🎃 Pumpkin Spice Season • Cozy Mode On</span>
           <span class="title" id="greeting-text">Welcome back.</span>
         </div>
         <div class="time-display" id="time-widget" title="Click to toggle 12h/24h time">
@@ -341,10 +369,10 @@
       <div class="dashboard-grid">
         <!-- MAIN COLUMN (Left) -->
         <div class="main-column">
-          <h2 class="section-title"><span>Day Progress</span><span id="day-progress-text" style="color: var(--accent);">0%</span></h2>
+          <h2 class="section-title"><span>Day Progress 🍬</span><span id="day-progress-text" style="color: var(--accent);">0%</span></h2>
           <div class="day-progress-container">
             <div class="progress-track"><div class="progress-fill" id="day-progress-bar"></div></div>
-            <div class="progress-labels"><span>Start</span><span>End</span></div>
+            <div class="progress-labels"><span>🌅 Start</span><span>🌙 End</span></div>
           </div>
 
           <h2 class="section-title">Quick Access</h2>
@@ -354,6 +382,8 @@
             <a class="app-tile github" href="https://github.com" target="_blank"><div class="app-icon"><i class="fa-brands fa-github"></i></div><span class="app-label">GitHub</span></a>
             <a class="app-tile amazon" href="https://amazon.com" target="_blank"><div class="app-icon"><i class="fa-brands fa-amazon"></i></div><span class="app-label">Amazon</span></a>
           </div>
+
+          <div class="pumpkin-divider">🎃 • 🍂 • 🕸️ • 🍬 • 👻</div>
 
           <!-- SPLIT GRID FOR SCRATCHPAD & REMINDERS -->
           <div class="split-widgets">
@@ -379,6 +409,12 @@
 
         <!-- SIDE COLUMN (Right) -->
         <aside class="side-column">
+          <div class="haunt-card">
+            <h3>🎃 Tonight's Haunt</h3>
+            <div class="haunt-count" id="halloween-count">3 days to Halloween</div>
+            <p>Cozy night checklist: warm drink, low lights, one focus session, then candy. No tricks, just treats.</p>
+          </div>
+
           <h2 class="section-title">Atmospheric Data</h2>
           <div class="weather-stack">
             <div class="weather-card">
@@ -438,7 +474,7 @@
 
     <!-- SECRET KONAMI VIEW -->
     <section id="view-secret" class="view-section">
-      <h2 class="secret-header"><i class="fa-solid fa-user-secret"></i> Vault Unlocked</h2>
+      <h2 class="secret-header"><i class="fa-solid fa-user-secret"></i> Vault Unlocked 👻</h2>
       <div class="panel" style="background: rgba(0,0,0,0.4); border-color: var(--danger); max-width: 600px; margin: 0 auto;">
         <a href="https://www.growfinancial.org/" target="_blank" class="bank-btn"><i class="fa-solid fa-building-columns"></i> Grow Financial Banking</a>
         <textarea id="secret-notes" placeholder="Encrypted notes (Auto-saves)..."></textarea>
@@ -459,6 +495,7 @@
 <!-- STANDBY SCREEN -->
 <div id="standby-screen">
   <div id="standby-clock">00:00</div>
+  <div style="margin-top:10px; font-size:1.2rem; opacity:.7;">🎃 Happy Haunting 🎃</div>
 </div>
 
 <script>
@@ -474,6 +511,17 @@ let isMilitaryTime = localStorage.getItem('tbw_military') === 'true';
 function applyTheme(theme) {
   if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
   else document.documentElement.removeAttribute('data-theme');
+}
+
+function updateHalloween() {
+  const el = document.getElementById('halloween-count');
+  if (!el) return;
+  const now = new Date();
+  let year = now.getFullYear();
+  let halloween = new Date(year, 9, 31);
+  if (now > halloween) halloween = new Date(year + 1, 9, 31);
+  const days = Math.ceil((halloween - now) / 86400000);
+  el.textContent = days === 0 ? "🎃 Happy Halloween!" : days === 1 ? "1 day to Halloween" : days + " days to Halloween";
 }
 
 function updateTime() {
@@ -496,6 +544,7 @@ function updateTime() {
   const percentComplete = ((now - startOfDay) / 86400000) * 100;
   document.getElementById('day-progress-bar').style.width = `${percentComplete}%`;
   document.getElementById('day-progress-text').textContent = `${Math.floor(percentComplete)}%`;
+  updateHalloween();
 }
 
 document.getElementById('time-widget').addEventListener('click', () => { isMilitaryTime = !isMilitaryTime; localStorage.setItem('tbw_military', isMilitaryTime); updateTime(); });
@@ -612,7 +661,7 @@ function resetPomodoro() {
 }
 
 function togglePomodoro() {
-  initAudio(); // Required to unlock browser audio
+  initAudio();
   const btn = document.getElementById('popup-pomo-btn'); 
   const wave = document.getElementById('wave');
   
@@ -627,7 +676,6 @@ function togglePomodoro() {
     btn.textContent = "Pause"; 
     document.body.classList.add('focus-mode'); 
     
-    // Wave animation triggers on start
     wave.classList.add('active'); 
     setTimeout(() => { wave.classList.remove('active'); }, 1600); 
     
@@ -691,7 +739,7 @@ function generateTelemetry() {
     });
   }
 }
-generateTelemetry(); // Run once on load for the Stats tab
+generateTelemetry();
 
 /* ── KONAMI & SECRET NOTES ── */
 const notesEl = document.getElementById('secret-notes'); notesEl.value = localStorage.getItem('tbw_secret_notes') || ''; notesEl.addEventListener('input', () => { localStorage.setItem('tbw_secret_notes', notesEl.value); });

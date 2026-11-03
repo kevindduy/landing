@@ -126,6 +126,28 @@
       text-shadow: 0 0 5px rgba(138, 180, 248, 0.5);
     }
 
+    /* GLOWING BLUE APP TILE (Muse.ai) */
+    .app-tile.glowing-blue .app-icon {
+      color: #8ab4f8;
+      border-color: rgba(138, 180, 248, 0.4);
+      box-shadow: 0 0 10px rgba(138, 180, 248, 0.1);
+      background: rgba(138, 180, 248, 0.05);
+      text-shadow: 0 0 8px rgba(138, 180, 248, 0.8);
+    }
+    .app-tile.glowing-blue .app-label {
+      color: #8ab4f8;
+    }
+    .app-tile.glowing-blue:hover .app-icon {
+      background: rgba(138, 180, 248, 0.15);
+      border-color: #8ab4f8;
+      box-shadow: 0 0 15px rgba(138, 180, 248, 0.3);
+      color: #8ab4f8;
+    }
+    .app-tile.glowing-blue:hover .app-label {
+      color: #8ab4f8;
+      text-shadow: 0 0 5px rgba(138, 180, 248, 0.5);
+    }
+
     /* ── FOCUS TIMER POPUP ── */
     #timer-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: var(--transition); }
     #timer-popup.active { opacity: 1; pointer-events: auto; }
@@ -347,7 +369,7 @@
           <div class="apps-grid">
             <a class="app-tile gemini" href="https://gemini.google.com/" target="_blank"><div class="app-icon"><i class="fa-solid fa-star"></i></div><span class="app-label">Gemini</span></a>
             <a class="app-tile gmail" href="https://mail.google.com" target="_blank"><div class="app-icon"><i class="fa-solid fa-envelope"></i></div><span class="app-label">Gmail</span></a>
-            <a class="app-tile github" href="https://github.com" target="_blank"><div class="app-icon"><i class="fa-brands fa-github"></i></div><span class="app-label">GitHub</span></a>
+            <a class="app-tile muse glowing-blue" href="https://muse.ai/" target="_blank"><div class="app-icon"><i class="fa-solid fa-play"></i></div><span class="app-label">Muse.ai</span></a>
             <a class="app-tile amazon" href="https://amazon.com" target="_blank"><div class="app-icon"><i class="fa-brands fa-amazon"></i></div><span class="app-label">Amazon</span></a>
           </div>
 

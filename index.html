@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Center | Cozy Hub ☕</title>
+  <title>Command Center</title>
   
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -108,6 +108,24 @@
     .sb-link:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateX(-2px); }
     .sb-link:hover i { color: var(--accent); }
 
+    /* GLOWING BLUE LINK (Muse.ai) */
+    .sb-link.glowing-blue {
+      color: #8ab4f8;
+      border-color: rgba(138, 180, 248, 0.4);
+      box-shadow: 0 0 10px rgba(138, 180, 248, 0.1);
+      background: rgba(138, 180, 248, 0.05);
+    }
+    .sb-link.glowing-blue i {
+      color: #8ab4f8;
+      text-shadow: 0 0 8px rgba(138, 180, 248, 0.8);
+    }
+    .sb-link.glowing-blue:hover {
+      background: rgba(138, 180, 248, 0.15);
+      border-color: #8ab4f8;
+      box-shadow: 0 0 15px rgba(138, 180, 248, 0.3);
+      text-shadow: 0 0 5px rgba(138, 180, 248, 0.5);
+    }
+
     /* ── FOCUS TIMER POPUP ── */
     #timer-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: var(--transition); }
     #timer-popup.active { opacity: 1; pointer-events: auto; }
@@ -149,7 +167,6 @@
 
     /* Cozy focus card */
     .cozy-card { background: var(--surface-hover); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 32px; text-align: center; }
-    .cozy-card i { font-size: 1.5rem; color: var(--accent); margin-bottom: 12px; display: inline-block; opacity: 0.8; }
     .cozy-card h3 { font-size: 1.2rem; margin-bottom: 8px; color: var(--text-main); font-style: italic;}
     .cozy-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; font-family: 'Inter', sans-serif; }
 
@@ -242,41 +259,15 @@
     #standby-screen.active { opacity: 1; pointer-events: auto; }
     #standby-clock { font-size: 6rem; font-weight: 300; letter-spacing: -0.02em; color: var(--text-main); font-family: 'Lora', serif; }
     .standby-msg { margin-top: 16px; font-size: 1rem; color: var(--text-muted); font-style: italic; letter-spacing: 0.02em;}
-
-    /* ── ART-GRADE SVG CATS (LEFT) ── */
-    .cat-zone { position: fixed; bottom: 0; left: 20px; width: 350px; height: 50px; z-index: 100; pointer-events: none; opacity: 0.8; }
-    .cat-container { position: absolute; bottom: 0; width: 45px; height: 45px; transform-origin: bottom center; }
-    .cat-svg { width: 100%; height: 100%; overflow: visible; drop-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    
-    .cat-container.orange-white { animation: wander1 24s infinite linear; }
-    .cat-container.grey1        { animation: wander2 28s infinite linear; animation-delay: 3s; }
-    .cat-container.grey2        { animation: wander3 20s infinite linear; animation-delay: 7s; }
-    .cat-container.brown-tabby  { animation: wander4 26s infinite linear; animation-delay: 11s; }
-
-    @keyframes wander1 { 0% { left: 0; transform: scaleX(1); } 45% { left: 250px; transform: scaleX(1); } 50% { left: 250px; transform: scaleX(-1); } 95% { left: 0; transform: scaleX(-1); } 100% { left: 0; transform: scaleX(1); } }
-    @keyframes wander2 { 0% { left: 50px; transform: scaleX(1); } 40% { left: 280px; transform: scaleX(1); } 45% { left: 280px; transform: scaleX(-1); } 90% { left: 50px; transform: scaleX(-1); } 100% { left: 50px; transform: scaleX(1); } }
-    @keyframes wander3 { 0% { left: 260px; transform: scaleX(-1); } 45% { left: 20px; transform: scaleX(-1); } 50% { left: 20px; transform: scaleX(1); } 95% { left: 260px; transform: scaleX(1); } 100% { left: 260px; transform: scaleX(-1); } }
-    @keyframes wander4 { 0% { left: 120px; transform: scaleX(1); } 30% { left: 300px; transform: scaleX(1); } 40% { left: 300px; transform: scaleX(-1); } 80% { left: 120px; transform: scaleX(-1); } 100% { left: 120px; transform: scaleX(1); } }
   </style>
 </head>
 <body>
-
-<svg width="0" height="0" style="position:absolute;">
-  <defs>
-    <path id="cat-body" d="M14.6,29.9 C14.6,29.9 11.2,28.5 10.1,26.4 C8.9,24.3 8.3,21.5 8.3,21.5 C8.3,21.5 7.1,21.3 6.3,20.8 C5.5,20.2 4.4,18.8 4.4,18.8 L2.7,14.6 C2.7,14.6 2.3,13.5 2.8,12.7 C3.3,11.9 4.2,11.9 4.2,11.9 L6.5,12.9 C6.5,12.9 7.4,10.6 9.3,9.2 C11.3,7.9 13.9,7.5 13.9,7.5 C13.9,7.5 14.5,5.1 15.6,3.6 C16.6,2.1 18.2,1.3 18.2,1.3 L18.8,3.9 C18.8,3.9 20.3,4.2 21.6,5.1 C22.9,6.0 23.6,7.2 23.6,7.2 L26.3,6.3 C26.3,6.3 27.6,6.1 28.3,7.1 C29.0,8.1 28.5,9.4 28.5,9.4 L26.5,12.7 C26.5,12.7 27.2,15.2 26.8,17.9 C26.3,20.6 24.5,23.3 24.5,23.3 L27.7,24.6 C27.7,24.6 30.6,25.6 31.7,28.2 C32.8,30.8 32.1,33.5 32.1,33.5 L28.9,33.3 C28.9,33.3 28.9,35.4 27.5,36.5 C26.1,37.6 24.0,37.3 24.0,37.3 L16.8,36.6 C16.8,36.6 15.2,36.4 14.6,35.2 C14.0,33.9 14.6,29.9 14.6,29.9 Z"/>
-    <path id="cat-white-patches" d="M10.1,26.4 C11.5,27.5 13.0,29.0 14.6,29.9 C14.6,29.9 14.0,33.9 14.6,35.2 C15.2,36.4 16.8,36.6 16.8,36.6 L20.5,36.8 C20.0,35.0 20.2,33.0 21.2,31.5 C20.0,30.0 19.5,28.0 19.8,26.0 C18.0,26.5 16.5,25.5 15.5,24.0 C13.5,25.0 11.5,25.5 10.1,26.4 Z M26.5,12.7 C26.0,14.0 25.0,15.0 23.5,15.5 C24.0,14.0 23.5,12.5 22.5,11.5 C24.0,11.0 25.5,11.5 26.5,12.7 Z M31.7,28.2 C32.8,30.8 32.1,33.5 32.1,33.5 L28.9,33.3 C28.9,33.3 28.9,35.4 27.5,36.5 C28.5,35.0 29.0,33.5 28.5,32.0 C29.5,31.5 30.5,30.0 31.7,28.2 Z" fill="#ffffff" opacity="0.9"/>
-    <pattern id="tabby-stripes" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(25)">
-      <rect width="6" height="6" fill="#8B5A2B" />
-      <line x1="0" y1="0" x2="0" y2="6" stroke="#5c432d" stroke-width="2" />
-    </pattern>
-  </defs>
-</svg>
 
 <!-- ── POPUP TIMER OVERLAY ── -->
 <div id="timer-popup" class="overlay-popup">
   <div class="timer-panel">
     <button class="close-timer" onclick="closeTimer()"><i class="fa-solid fa-xmark"></i></button>
-    <h2>Deep Work ☕</h2>
+    <h2>Focus Session</h2>
     <div class="timer-display" id="popup-pomo-display">25:00</div>
     <div class="timer-controls">
       <button class="pomo-btn" id="popup-pomo-btn" onclick="togglePomodoro()">Start Session</button>
@@ -291,6 +282,7 @@
     <span><i class="fa-solid fa-compass" style="color:var(--text-muted); margin-right:8px;"></i> Quick Hub</span>
     <button class="close-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
   </div>
+  <a href="https://muse.ai/" target="_blank" class="sb-link glowing-blue"><i class="fa-solid fa-play"></i> Muse.ai</a>
   <a href="https://www.remove.bg/" target="_blank" class="sb-link sb-removebg"><i class="fa-solid fa-eraser"></i> Remove.bg</a>
   <a href="https://chat.openai.com/" target="_blank" class="sb-link sb-chatgpt"><i class="fa-solid fa-robot"></i> ChatGPT</a>
   <a href="https://claude.ai/" target="_blank" class="sb-link sb-claude"><i class="fa-solid fa-brain"></i> Claude</a>
@@ -333,7 +325,7 @@
     <section id="view-home" class="view-section active">
       <header class="dashboard-header">
         <div class="greeting-area">
-          <span class="sub">Personal OS • Cozy Mode On</span>
+          <span class="sub">Personal Workspace</span>
           <span class="title" id="greeting-text">Welcome back.</span>
         </div>
         <div class="time-display" id="time-widget" title="Click to toggle 12h/24h time">
@@ -386,9 +378,8 @@
         <!-- SIDE COLUMN (Right) -->
         <aside class="side-column">
           <div class="cozy-card">
-            <i class="fa-solid fa-mug-hot"></i>
-            <h3>Gentle Reminder</h3>
-            <p>Take things one step at a time. Make time for a warm drink, dim the lights, and clear your mind.</p>
+            <h3>Moment of Calm</h3>
+            <p>Take things one step at a time. Clear your mind, maintain focus, and navigate the day with intention.</p>
           </div>
 
           <h2 class="section-title">Atmosphere</h2>
@@ -460,14 +451,6 @@
     </section>
 
   </main>
-
-  <!-- CATS ZONE (Left) -->
-  <div class="cat-zone">
-    <div class="cat-container orange-white"><svg class="cat-svg" viewBox="0 0 40 40"><use href="#cat-body" fill="#d4966a" /><use href="#cat-white-patches" /></svg></div>
-    <div class="cat-container grey1"><svg class="cat-svg" viewBox="0 0 40 40"><use href="#cat-body" fill="#9ca3af" /></svg></div>
-    <div class="cat-container grey2"><svg class="cat-svg" viewBox="0 0 40 40"><use href="#cat-body" fill="#6b7280" /></svg></div>
-    <div class="cat-container brown-tabby"><svg class="cat-svg" viewBox="0 0 40 40"><use href="#cat-body" fill="url(#tabby-stripes)" /><use href="#cat-white-patches" /></svg></div>
-  </div>
 </div>
 
 <!-- STANDBY SCREEN -->
@@ -618,7 +601,7 @@ function resetPomodoro() {
   pomoTime = 25 * 60;
   document.getElementById('popup-pomo-display').textContent = formatPomo(pomoTime);
   document.getElementById('popup-pomo-btn').textContent = "Start Session";
-  document.title = "Command Center | Cozy Hub";
+  document.title = "Command Center";
   if (!document.getElementById('timer-popup').classList.contains('active')) {
      document.body.classList.remove('focus-mode');
   }
